@@ -12,4 +12,7 @@ Step:
 2. Create Map menggunakan Google Map Javascript API
 3. Create Marker Cluster
 
-Next: Tambah Filter untuk tipe sekolah
+Next: 
+
+1. Tambah Filter untuk tipe sekolah
+2. Tambah panel untuk profil sekolah : http://sekolah.data.kemdikbud.go.id/index.php/chome/profil/4BB70990-D058-4681-AC2A-5C1D30444DAB
