@@ -4,6 +4,8 @@ Jak School Viz
 
 Data Source : https://raw.githubusercontent.com/ramdaffe/opendikbud/master/jakarta.csv
 
+All Data: https://github.com/ramdaffe/opendikbud
+
 Step:
 
 1. Rubah CSV menjadi JSON
