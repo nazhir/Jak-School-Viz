@@ -4,15 +4,37 @@
   <title>Sebaran Sekolah di DKI Jakarta</title>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" type="text/css" href="css/default.css" />
+  <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
   <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" />  
   <link rel="stylesheet" href="http://leaflet.github.io/Leaflet.markercluster/dist/MarkerCluster.css" />
   <link rel="stylesheet" href="http://leaflet.github.io/Leaflet.markercluster/dist/MarkerCluster.Default.css" />
-  <link rel="stylesheet" type="text/css" href="css/default.css" />
+  
 </head>
 <body>
-  <div id="map-canvas"></div>
-
+  <div data-role="page" id="map-page" data-url="map-page">
+    <div id="level">
+          <form>
+            <div class="ui-field-contain">
+                <select name="select-native-1" id="select-native-1">
+                    <option value="all">Semua</option>
+                    <option value="sd">SD</option>
+                    <option value="smp">SMP</option>
+                    <option value="sma">SMA</option>
+                    <option value="smk">SMK</option>
+                </select>
+            </div>
+          </form>
+       </div>
+    <div role="main" class="ui-content" id="map-canvas"></div>
+  </div>
   <script src="http://code.jquery.com/jquery.min.js"></script>
+  <script>
+    $(document).bind('mobileinit',function(){
+        $.mobile.pushStateEnabled = false;
+    });
+  </script>
+  <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
   <script type="text/javascript" src="js/jquery.csv.js"></script>
   <script src="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js"></script>
   <script src="http://leaflet.github.io/Leaflet.markercluster/dist/leaflet.markercluster-src.js"></script>

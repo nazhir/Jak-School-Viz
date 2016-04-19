@@ -1,8 +1,3 @@
-body {
-        padding: 0;
-        margin: 0;
-}
-html, body, #map-canvas {
-    height: 100%;
-    width: 100%;
-}
+html, body,#map-page { height: 100%; padding: 0;}
+
+#map-canvas { height: 100%; margin: 0;}
