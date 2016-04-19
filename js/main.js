@@ -1,77 +1,33 @@
-var defaultAddr = 'Jakarta';
-var defaultLatLng;
-var geocoder = new google.maps.Geocoder();
-var markerArray = [];
+var mymap = L.map('map-canvas').setView([-6.2582000,106.77620], 11);
 
-$(document).on( "pagecreate", "#map-page", function() {	
-	//defaultLatLng = geoCoder(defaultAddr);
+L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpandmbXliNDBjZWd2M2x6bDk3c2ZtOTkifQ._QA7i5Mpkd_m30IGElHziw', {
+  maxZoom: 18,
+  attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
+    '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+    'Imagery © <a href="http://mapbox.com">Mapbox</a>',
+  id: 'mapbox.streets'
+}).addTo(mymap);
 
-    geocoder.geocode({'address': defaultAddr}, function(results, status) {
-    if (status === google.maps.GeocoderStatus.OK) {
-      defaultLatLng = results[0].geometry.location;
-        if ( navigator.geolocation ) {
-            function success(pos) {
-                // Location found, show map with these coordinates
-                drawMap(12,new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude));
-            }
+var markers = L.markerClusterGroup({ chunkedLoading: true });
 
-           function fail(error) {
-            drawMap(12,defaultLatLng);  // Failed to find location, show default map
-           }
+var markerList = [];
 
-          // Find the users current position.  Cache the location for 5 minutes, timeout after 6 seconds
-          navigator.geolocation.getCurrentPosition(success, fail, {maximumAge: 500000, enableHighAccuracy:true, timeout: 6000});  
-        } else {
-          drawMap(12,defaultLatLng);  // No geolocation support, show default map
-        }
-    } else {
-      alert('Geocode was not successful for the following reason: ' + status);
-    }
-    });
-})
+var school_csv = "https://raw.githubusercontent.com/ramdaffe/opendikbud/master/jakarta.csv";
 
-function geoCoder(addr) {
-	geocoder.geocode({'address': addr}, function(results, status) {
-    if (status === google.maps.GeocoderStatus.OK) {
-      return results[0].geometry.location;
-    } else {
-      alert('Geocode was not successful for the following reason: ' + status);
-    }
-  	});
-}
+$.ajax({
+      url: school_csv,
+      async: false,
+      dataType: "text",
+      success: function (csvd) {
+          var data = $.csv.toObjects(csvd);
+          data.forEach(function (k) {
+            var title = k.name;
+            var marker = L.marker(L.latLng(k.lat, k.long), { title: title });
+            marker.bindPopup(title);
+            markerList.push(marker);
+          });
+      }
+});
 
-function drawMap(size,latlng) {
-
-        var myOptions = {
-            zoom: size,
-            center: latlng,
-            disableDefaultUI: true,
-            mapTypeId: google.maps.MapTypeId.ROADMAP
-        };
-
-        map = new google.maps.Map(document.getElementById("map-canvas"), myOptions);
-		
-		var school_csv = "https://raw.githubusercontent.com/ramdaffe/opendikbud/master/jakarta.csv";
-
-  		$.ajax({
-            url: school_csv,
-            async: false,
-            dataType: "text",
-            success: function (csvd) {
-                var data = $.csv.toObjects(csvd);
-                drawMarker(map,data);
-            }
-        });
-}
-
-function drawMarker(map,data){
-    data.forEach(function (k) {
-        var marker = new google.maps.Marker({
-            position: new google.maps.LatLng(k.lat, k.long),
-            optimized: true,
-            map: map
-        });
-        markerArray.push(marker);
-    });
-    var markerCluster = new MarkerClusterer(map,markerArray);	
-}
+markers.addLayers(markerList);
+mymap.addLayer(markers);
