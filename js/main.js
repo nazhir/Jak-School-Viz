@@ -1,12 +1,14 @@
-var mymap = L.map('map-canvas').setView([-6.2582000,106.77620], 11);
+var myMap = L.map('map-canvas').setView([-6.2582000,106.77620], 11);
 
 L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpandmbXliNDBjZWd2M2x6bDk3c2ZtOTkifQ._QA7i5Mpkd_m30IGElHziw', {
-  maxZoom: 18,
+  maxZoom: 20,
   attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
     '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
     'Imagery © <a href="http://mapbox.com">Mapbox</a>',
   id: 'mapbox.streets'
-}).addTo(mymap);
+}).addTo(myMap);
+
+new L.Control.Zoom({ position: 'bottomright' }).addTo(myMap);
 
 var markers = L.markerClusterGroup({ chunkedLoading: true });
 
@@ -30,4 +32,4 @@ $.ajax({
 });
 
 markers.addLayers(markerList);
-mymap.addLayer(markers);
+myMap.addLayer(markers);
